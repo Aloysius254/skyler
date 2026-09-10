@@ -6,20 +6,35 @@ const musicToggle = document.getElementById('musicToggle');
 // Set low background volume
 music.volume = 0.3;
 
+// Check if music was playing on previous page
+const wasMusicPlaying = sessionStorage.getItem('musicPlaying') === 'true';
+if (wasMusicPlaying) {
+    music.play().then(() => {
+        musicPlaying = true;
+        musicToggle.classList.add('playing');
+    }).catch(() => {
+        // Autoplay blocked
+    });
+}
+
 // Autoplay on first user interaction (click, touch, or keydown)
 // Browsers require a user gesture before audio can play
 function tryAutoplay() {
     if (autoplayDone) return;
     autoplayDone = true;
 
-    music.play()
-        .then(() => {
-            musicPlaying = true;
-            musicToggle.classList.add('playing');
-        })
-        .catch(() => {
-            // Autoplay was blocked — user can still click the 🎵 button manually
-        });
+    // Only autoplay if music wasn't already started from session storage
+    if (!musicPlaying) {
+        music.play()
+            .then(() => {
+                musicPlaying = true;
+                musicToggle.classList.add('playing');
+                sessionStorage.setItem('musicPlaying', 'true');
+            })
+            .catch(() => {
+                // Autoplay was blocked — user can still click the 🎵 button manually
+            });
+    }
 
     // Remove all three listeners once fired
     document.removeEventListener('click',      tryAutoplay);
@@ -36,9 +51,11 @@ function toggleMusic() {
     if (musicPlaying) {
         music.pause();
         musicToggle.classList.remove('playing');
+        sessionStorage.setItem('musicPlaying', 'false');
     } else {
         music.play();
         musicToggle.classList.add('playing');
+        sessionStorage.setItem('musicPlaying', 'true');
     }
     musicPlaying = !musicPlaying;
 }
@@ -92,7 +109,7 @@ function savePhoto() {
     const previewImage = document.getElementById('previewImage');
     const caption = document.getElementById('captionInput').value || 'a beautiful memory';
     
-    if (previewImage.src) {
+    if (previewImage.src && previewImage.src.startsWith('data:image')) {
         const photo = {
             id: Date.now(),
             src: previewImage.src,
@@ -103,6 +120,8 @@ function savePhoto() {
         localStorage.setItem('skylerGallery', JSON.stringify(uploadedPhotos));
         renderGallery();
         closeUpload();
+    } else {
+        alert('Please select an image first! 📷');
     }
 }
 
