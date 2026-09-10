@@ -146,10 +146,11 @@ blockquote {
 }
 
 .hero-subtitle {
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
     margin-bottom: 10px;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
 }
 
 .hero-title {
@@ -159,32 +160,26 @@ blockquote {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 30px;
-    min-height: 6rem;
-}
-
-.hero-title::after {
-    content: '|';
-    animation: blink 0.7s infinite;
-    -webkit-text-fill-color: var(--accent-light);
-}
-
-.hero-title.typing-complete::after {
-    display: none;
-}
-
-.hero-typing {
-    font-size: 1.5rem;
-    color: var(--accent-light);
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    min-height: 2rem;
     margin-bottom: 20px;
 }
 
-.hero-typing::after {
+.hero-tagline {
+    font-size: 1.8rem;
+    color: var(--text-secondary);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    min-height: 2.5rem;
+    margin-bottom: 40px;
+}
+
+.hero-tagline::after {
     content: '|';
     animation: blink 0.7s infinite;
+    color: var(--accent-light);
+}
+
+.hero-tagline.typing-complete::after {
+    display: none;
 }
 
 @keyframes blink {
@@ -194,8 +189,11 @@ blockquote {
 
 .scroll-indicator {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
     animation: bounce 2s infinite;
+    margin-top: 20px;
 }
 
 @keyframes bounce {

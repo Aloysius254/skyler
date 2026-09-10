@@ -136,63 +136,51 @@ if (document.getElementById('galleryGrid')) {
 // ROMANTIC INTERACTIONS & ANIMATIONS
 // ========================================
 
-// Typing Effect on Hero Title "Bestie Skyler"
-const heroTitle = document.getElementById('heroTitle');
-const titleText = "Bestie Skyler";
-let titleCharIndex = 0;
-
-function typeHeroTitle() {
-    if (titleCharIndex < titleText.length) {
-        heroTitle.textContent = titleText.substring(0, titleCharIndex + 1);
-        titleCharIndex++;
-        setTimeout(typeHeroTitle, 150);
-    } else {
-        heroTitle.classList.add('typing-complete');
-        // Start the secondary typing messages
-        setTimeout(typeEffect, 500);
-    }
-}
-
-// Start hero title typing after a short delay
-setTimeout(typeHeroTitle, 800);
-
-// Typing Effect for Secondary Messages
-const typingText = document.getElementById('typingText');
-const messages = [
-    "A little something just for you...",
-    "Made with love and late nights...",
-    "You mean the world to me... 💜"
+// Typing Effect on Hero Tagline (like "Not a quiz. Not a game. Just")
+const heroTagline = document.getElementById('heroTagline');
+const taglineMessages = [
+    "Not just a website.",
+    "Not just words.",
+    "Just something from the heart.",
+    "For you. 💜"
 ];
-let messageIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-let typingSpeed = 100;
+let taglineIndex = 0;
+let taglineCharIndex = 0;
+let isTaglineDeleting = false;
 
-function typeEffect() {
-    const currentMessage = messages[messageIndex];
+function typeTagline() {
+    const currentText = taglineMessages[taglineIndex];
     
-    if (isDeleting) {
-        typingText.textContent = currentMessage.substring(0, charIndex - 1);
-        charIndex--;
-        typingSpeed = 50;
+    if (isTaglineDeleting) {
+        heroTagline.textContent = currentText.substring(0, taglineCharIndex - 1);
+        taglineCharIndex--;
+        
+        if (taglineCharIndex === 0) {
+            isTaglineDeleting = false;
+            taglineIndex = (taglineIndex + 1) % taglineMessages.length;
+            setTimeout(typeTagline, 500);
+        } else {
+            setTimeout(typeTagline, 50);
+        }
     } else {
-        typingText.textContent = currentMessage.substring(0, charIndex + 1);
-        charIndex++;
-        typingSpeed = 100;
+        heroTagline.textContent = currentText.substring(0, taglineCharIndex + 1);
+        taglineCharIndex++;
+        
+        if (taglineCharIndex === currentText.length) {
+            heroTagline.classList.add('typing-complete');
+            setTimeout(() => {
+                heroTagline.classList.remove('typing-complete');
+                isTaglineDeleting = true;
+                setTimeout(typeTagline, 2000);
+            }, 2500);
+        } else {
+            setTimeout(typeTagline, 100);
+        }
     }
-    
-    if (!isDeleting && charIndex === currentMessage.length) {
-        // Pause at end of message
-        typingSpeed = 2000;
-        isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        messageIndex = (messageIndex + 1) % messages.length;
-        typingSpeed = 500;
-    }
-    
-    setTimeout(typeEffect, typingSpeed);
 }
+
+// Start tagline typing after page load
+setTimeout(typeTagline, 1200);
 
 // Cursor Glow Effect
 const cursorGlow = document.querySelector('.cursor-glow');
