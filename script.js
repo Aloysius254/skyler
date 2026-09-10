@@ -504,3 +504,43 @@ document.getElementById('openWhenModal')?.addEventListener('click', (e) => {
         closeMessage();
     }
 });
+
+// Load Snaps from JSON
+async function loadSnaps() {
+    const grid = document.getElementById('snapsGrid');
+    if (!grid) return;
+
+    try {
+        const response = await fetch('snaps.json');
+        const snaps = await response.json();
+
+        grid.innerHTML = '';
+
+        snaps.forEach((snap, index) => {
+            const rotation = (Math.random() - 0.5) * 6; // -3 to 3 degrees
+            const card = document.createElement('div');
+            card.className = 'snap-card';
+            card.style.setProperty('--rotation', `${rotation}deg`);
+            card.innerHTML = `
+                <div class="snap-inner">
+                    <img class="snap-image" src="${snap.src}" alt="${snap.caption}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="snap-placeholder" style="display:none; width:100%; aspect-ratio:4/5; background:var(--card-bg); border-radius:8px 8px 0 0; align-items:center; justify-content:center; color:var(--text-secondary); font-size:3rem;">📷</div>
+                    <div class="snap-caption-area">
+                        <div class="snap-tape"></div>
+                        <p class="snap-caption">${snap.caption}</p>
+                        <p class="snap-date">${snap.date}</p>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    } catch (error) {
+        console.error('Failed to load snaps:', error);
+        grid.innerHTML = '<p style="text-align:center; color:var(--text-secondary);">Could not load snaps. Make sure snaps.json exists.</p>';
+    }
+}
+
+// Initialize snaps if on snaps page
+if (document.getElementById('snapsGrid')) {
+    loadSnaps();
+}
