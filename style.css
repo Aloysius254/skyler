@@ -160,6 +160,17 @@ blockquote {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 30px;
+    min-height: 6rem;
+}
+
+.hero-title::after {
+    content: '|';
+    animation: blink 0.7s infinite;
+    -webkit-text-fill-color: var(--accent-light);
+}
+
+.hero-title.typing-complete::after {
+    display: none;
 }
 
 .hero-typing {

@@ -136,7 +136,27 @@ if (document.getElementById('galleryGrid')) {
 // ROMANTIC INTERACTIONS & ANIMATIONS
 // ========================================
 
-// Typing Effect on Landing Page
+// Typing Effect on Hero Title "Bestie Skyler"
+const heroTitle = document.getElementById('heroTitle');
+const titleText = "Bestie Skyler";
+let titleCharIndex = 0;
+
+function typeHeroTitle() {
+    if (titleCharIndex < titleText.length) {
+        heroTitle.textContent = titleText.substring(0, titleCharIndex + 1);
+        titleCharIndex++;
+        setTimeout(typeHeroTitle, 150);
+    } else {
+        heroTitle.classList.add('typing-complete');
+        // Start the secondary typing messages
+        setTimeout(typeEffect, 500);
+    }
+}
+
+// Start hero title typing after a short delay
+setTimeout(typeHeroTitle, 800);
+
+// Typing Effect for Secondary Messages
 const typingText = document.getElementById('typingText');
 const messages = [
     "A little something just for you...",
@@ -173,9 +193,6 @@ function typeEffect() {
     
     setTimeout(typeEffect, typingSpeed);
 }
-
-// Start typing effect after a short delay
-setTimeout(typeEffect, 1000);
 
 // Cursor Glow Effect
 const cursorGlow = document.querySelector('.cursor-glow');
