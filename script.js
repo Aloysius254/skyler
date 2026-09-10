@@ -77,15 +77,46 @@ function handleScrollAnimation() {
 window.addEventListener('scroll', handleScrollAnimation);
 window.addEventListener('load', handleScrollAnimation);
 
-// Gallery Functions - Shared gallery visible to everyone
+// Gallery Functions - Shared gallery visible to everyone via Firebase
 let uploadedPhotos = [];
-const GALLERY_KEY = 'skylerSharedGallery';
+let database;
 
-// Load photos (shared via localStorage for now - visible on same browser)
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyDqpN8vR9kZxKj8YHj_3mW8vN5xKj8YHj_",
+    authDomain: "skyler-gallery.firebaseapp.com",
+    databaseURL: "https://skyler-gallery-default-rtdb.firebaseio.com",
+    projectId: "skyler-gallery",
+    storageBucket: "skyler-gallery.appspot.com",
+    messagingSenderId: "123456789012",
+    appId: "1:123456789012:web:abc123def456"
+};
+
+// Check if Firebase is available and initialize
+if (typeof firebase !== 'undefined') {
+    try {
+        firebase.initializeApp(firebaseConfig);
+        database = firebase.database();
+    } catch (error) {
+        console.log('Firebase not available, using localStorage');
+    }
+}
+
+// Load photos from Firebase (shared) or localStorage (fallback)
 function loadGallery() {
-    const stored = localStorage.getItem(GALLERY_KEY);
-    uploadedPhotos = stored ? JSON.parse(stored) : [];
-    renderGallery();
+    if (database) {
+        // Load from Firebase - visible to everyone
+        database.ref('photos').on('value', (snapshot) => {
+            const data = snapshot.val();
+            uploadedPhotos = data ? Object.values(data) : [];
+            renderGallery();
+        });
+    } else {
+        // Fallback to localStorage
+        const stored = localStorage.getItem('skylerSharedGallery');
+        uploadedPhotos = stored ? JSON.parse(stored) : [];
+        renderGallery();
+    }
 }
 
 function openUpload() {
@@ -167,13 +198,31 @@ function savePhoto() {
             date: new Date().toISOString()
         };
         
-        uploadedPhotos.push(photo);
-        localStorage.setItem(GALLERY_KEY, JSON.stringify(uploadedPhotos));
-        renderGallery();
-        closeUpload();
+        if (database) {
+            // Save to Firebase - visible to everyone
+            database.ref('photos/' + photo.id).set(photo)
+                .then(() => {
+                    closeUpload();
+                })
+                .catch((error) => {
+                    console.error('Firebase save error:', error);
+                    alert('Could not save to cloud. Saving locally.');
+                    saveToLocalStorage(photo);
+                });
+        } else {
+            // Fallback to localStorage
+            saveToLocalStorage(photo);
+        }
     } else {
         alert('Please select an image first! 📷');
     }
+}
+
+function saveToLocalStorage(photo) {
+    uploadedPhotos.push(photo);
+    localStorage.setItem('skylerSharedGallery', JSON.stringify(uploadedPhotos));
+    renderGallery();
+    closeUpload();
 }
 
 function renderGallery() {
@@ -202,9 +251,19 @@ function renderGallery() {
 
 function deletePhoto(photoId) {
     if (confirm('Delete this photo? 🥺')) {
-        uploadedPhotos = uploadedPhotos.filter(photo => photo.id !== photoId);
-        localStorage.setItem(GALLERY_KEY, JSON.stringify(uploadedPhotos));
-        renderGallery();
+        if (database) {
+            // Delete from Firebase
+            database.ref('photos/' + photoId).remove()
+                .catch((error) => {
+                    console.error('Firebase delete error:', error);
+                    alert('Could not delete from cloud.');
+                });
+        } else {
+            // Delete from localStorage
+            uploadedPhotos = uploadedPhotos.filter(photo => photo.id !== photoId);
+            localStorage.setItem('skylerSharedGallery', JSON.stringify(uploadedPhotos));
+            renderGallery();
+        }
     }
 }
 
