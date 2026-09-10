@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Gallery 📷</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="gallery-page">
+        <a href="index.html" class="back-btn">← back</a>
+        
+        <h1 class="gallery-title">our moments ✨</h1>
+        <p class="gallery-subtitle">every photo tells a story</p>
+        
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Photos will be added here -->
+            <div class="add-photo-card" onclick="openUpload()">
+                <span class="plus-icon">+</span>
+                <span class="add-text">add a memory</span>
+            </div>
+        </div>
+
+        <div class="upload-modal" id="uploadModal">
+            <div class="modal-content">
+                <h2>add a photo 📷</h2>
+                <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)">
+                <div class="preview-container" id="previewContainer">
+                    <img id="previewImage" src="" alt="Preview">
+                </div>
+                <input type="text" id="captionInput" placeholder="add a caption..." maxlength="100">
+                <div class="modal-buttons">
+                    <button onclick="savePhoto()">save photo</button>
+                    <button class="skip-btn" onclick="closeUpload()">skip</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

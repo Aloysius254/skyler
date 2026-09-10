@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Skyler 🌙</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Starry Background Canvas -->
+    <canvas id="starsCanvas"></canvas>
+    
+    <!-- Floating Particles -->
+    <div id="particles"></div>
+    
+    <!-- Cursor Glow -->
+    <div class="cursor-glow"></div>
+    
+    <div class="music-toggle" id="musicToggle" onclick="toggleMusic()">🎵</div>
+    <audio id="bgMusic" loop>
+        <source src="music/Bruno Mars - Count on Me (Official Lyric Video)(MP3_160K).mp3" type="audio/mpeg">
+    </audio>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p class="hero-subtitle">something i made for</p>
+            <h1 class="hero-title">Bestie Skyler</h1>
+            <div class="scroll-indicator">scroll ↓</div>
+        </div>
+    </section>
+
+    <section class="notice-section">
+        <h2 class="section-title">things i noticed about you</h2>
+
+        <div class="notice-card">
+            <div class="notice-icon">✨</div>
+            <h3>You light up every room</h3>
+            <p>There's something about the way you walk into a space and suddenly everything feels warmer. You don't try too hard — you just are. And that's the most beautiful thing about you.</p>
+        </div>
+
+        <div class="notice-card">
+            <div class="notice-icon">🌊</div>
+            <h3>You feel everything deeply</h3>
+            <p>You don't just go through life — you experience it. Every song, every sunset, every conversation. You carry the world in your heart and somehow still make room for everyone else.</p>
+        </div>
+
+        <div class="notice-card">
+            <div class="notice-icon">🌙</div>
+            <h3>You're a night owl at heart</h3>
+            <p>The late nights, the overthinking, the 3am thoughts that turn into life-changing realizations. You come alive when the world goes quiet — and honestly, that's when you're most you.</p>
+        </div>
+
+        <div class="notice-card">
+            <div class="notice-icon">🎯</div>
+            <h3>You're fiercely loyal</h3>
+            <p>When you love, you love hard. You don't do halfway. You'd move mountains for the people you care about — and you do it without even realizing. That's rare, Skyler. Don't ever change.</p>
+        </div>
+    </section>
+
+    <section class="quote-section">
+        <blockquote>"Some people make the world feel fuller just by being in it."</blockquote>
+        <p class="quote-author">— that's you, Skyler</p>
+    </section>
+
+    <section class="vibe-section">
+        <h2 class="section-title">your vibe</h2>
+        <div class="vibe-grid">
+            <div class="vibe-item">
+                <span class="vibe-icon">✨</span>
+                <span class="vibe-text">glowing energy</span>
+            </div>
+            <div class="vibe-item">
+                <span class="vibe-icon">🌙</span>
+                <span class="vibe-text">late night talks</span>
+            </div>
+            <div class="vibe-item">
+                <span class="vibe-icon">🎵</span>
+                <span class="vibe-text">songs that hit different</span>
+            </div>
+            <div class="vibe-item">
+                <span class="vibe-icon">💫</span>
+                <span class="vibe-text">main character energy</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- You Are... Section -->
+    <section class="you-are-section">
+        <h2 class="section-title">You are...</h2>
+        <div class="you-are-words" id="youAreWords">
+            <p class="you-are-word">kind.</p>
+            <p class="you-are-word">funny.</p>
+            <p class="you-are-word">chaotic. 😂</p>
+            <p class="you-are-word">loyal.</p>
+            <p class="you-are-word">beautiful.</p>
+            <p class="you-are-word">strong.</p>
+            <p class="you-are-word">unforgettable.</p>
+            <p class="you-are-word final-word">...and completely yourself. 💜</p>
+        </div>
+    </section>
+
+    <!-- Open When... Cards Section -->
+    <section class="open-when-section">
+        <h2 class="section-title">Open when...</h2>
+        <div class="open-when-grid">
+            <div class="open-when-card" onclick="openMessage('sad')">
+                <span class="open-icon">💌</span>
+                <p>you're sad</p>
+            </div>
+            <div class="open-when-card" onclick="openMessage('sleep')">
+                <span class="open-icon">🌙</span>
+                <p>you can't sleep</p>
+            </div>
+            <div class="open-when-card" onclick="openMessage('laugh')">
+                <span class="open-icon">😂</span>
+                <p>you need to laugh</p>
+            </div>
+            <div class="open-when-card" onclick="openMessage('reminder')">
+                <span class="open-icon">🥹</span>
+                <p>you need a reminder</p>
+            </div>
+            <div class="open-when-card" onclick="openMessage('amazing')">
+                <span class="open-icon">✨</span>
+                <p>you forget how amazing you are</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Open When Modal -->
+    <div class="open-when-modal" id="openWhenModal">
+        <div class="open-when-modal-content">
+            <span class="close-modal" onclick="closeMessage()">&times;</span>
+            <div class="modal-icon" id="modalIcon">💌</div>
+            <h3 id="modalTitle">Open when you're sad</h3>
+            <p id="modalMessage">Message goes here...</p>
+        </div>
+    </div>
+
+    <section class="note-section">
+        <h2 class="section-title">a note for you</h2>
+        <div class="note-content">
+            <p>And here's the thing —</p>
+            <p><em>I notice all of it.</em></p>
+            <br>
+            <p>Someone who'd stay up until 4am just to hear about your day</p>
+            <p>Someone who'd laugh at your worst jokes and still mean it</p>
+            <p>Someone who'd drop everything when you need them</p>
+            <p>Someone who'd choose you — over and over and over again</p>
+            <br>
+            <p>I don't know how I got lucky enough to have a friendship like this, but I'm grateful for every laugh, every conversation, every ridiculous moment, and every memory we've made.</p>
+            <p>You're one of those people who make everything make sense. And I just wanted you to know that.</p>
+            <br>
+            <p class="note-sign">— your bestie 💜</p>
+        </div>
+    </section>
+
+    <!-- Cinematic Final Section -->
+    <section class="cinematic-section">
+        <div class="cinematic-content">
+            <p class="cinematic-line fade-in-line">Before you leave...</p>
+            <p class="cinematic-line fade-in-line">I just want you to remember one thing.</p>
+            <p class="cinematic-line fade-in-line large">You matter.</p>
+            <p class="cinematic-line fade-in-line large">You are loved.</p>
+            <p class="cinematic-line fade-in-line">And I'm really lucky<br>to call you my bestie.</p>
+            <p class="cinematic-line fade-in-line moon">🌙</p>
+            <p class="cinematic-line fade-in-line signature">— your bestie</p>
+        </div>
+    </section>
+
+    <section class="final-quote">
+        <blockquote>"Some people become part of your story.<br>You're one of my favorite chapters."</blockquote>
+    </section>
+
+    <section class="message-section">
+        <a href="https://wa.me/1234567890?text=Hey%20bestie!%20%F0%9F%98%8A%20I%20just%20read%20what%20you%20made%20for%20me...%20%F0%9F%98%8A" class="message-btn" target="_blank">
+            💬 Message me
+        </a>
+    </section>
+
+    <section class="gallery-section">
+        <a href="gallery.html" class="gallery-link">📷 our gallery</a>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
