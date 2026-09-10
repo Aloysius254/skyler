@@ -7,29 +7,171 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📸</text></svg>">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Patrick+Hand&display=swap" rel="stylesheet">
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
-<body>
-    <!-- Music continues playing -->
-    <div class="music-toggle" id="musicToggle" onclick="toggleMusic()">🎵</div>
-    <audio id="bgMusic" loop>
-        <source src="music/Bruno Mars - Count on Me (Official Lyric Video)(MP3_160K).mp3" type="audio/mpeg">
-    </audio>
+<body class="snaps-body">
+    <!-- Close button -->
+    <a href="index.html" class="snap-close">✕</a>
 
-    <a href="index.html" class="back-btn">← back</a>
+    <!-- Progress bars -->
+    <div class="snap-progress-container" id="progressContainer"></div>
 
-    <header class="snaps-header">
-        <h1 class="snaps-title">our snaps 📸</h1>
-        <p class="snaps-subtitle">polaroids from our chaos</p>
-    </header>
+    <!-- Snap viewer -->
+    <div class="snap-viewer" id="snapViewer">
+        <div class="snap-content-wrapper">
+            <img src="" alt="" class="snap-main-image" id="snapImage">
+            <div class="snap-caption-box" id="snapCaption"></div>
+        </div>
 
-    <div class="snaps-container" id="snapsContainer">
-        <!-- Snaps will be loaded here from Firebase -->
+        <!-- Navigation arrows -->
+        <button class="snap-nav snap-nav-left" id="prevBtn" onclick="previousSnap()">‹</button>
+        <button class="snap-nav snap-nav-right" id="nextBtn" onclick="nextSnap()">›</button>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Tap zones for mobile -->
+    <div class="snap-tap-left" onclick="previousSnap()"></div>
+    <div class="snap-tap-right" onclick="nextSnap()"></div>
+
+    <script>
+        // Snaps data - Your real images!
+        const snaps = [
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.31.jpeg",
+                caption: "Perfect moment 📸"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.46 (1).jpeg",
+                caption: "Late night vibes 🌙"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.46.jpeg",
+                caption: "That smile though 😊"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.47 (1).jpeg",
+                caption: "Random Tuesday ✨"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.47.jpeg",
+                caption: "Candid laughter 😂"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.48.jpeg",
+                caption: "Main character energy 💜"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.49 (1).jpeg",
+                caption: "That vibe 🎵"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.49.jpeg",
+                caption: "Unfiltered beauty ✨"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.50 (1).jpeg",
+                caption: "Just being you 💫"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.50 (2).jpeg",
+                caption: "Another day, another slay 👑"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.50.jpeg",
+                caption: "Skyler being Skyler 🌟"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.51 (1).jpeg",
+                caption: "Caught in the moment 📷"
+            },
+            {
+                image: "images/WhatsApp Image 2026-09-10 at 14.53.51.jpeg",
+                caption: "You're unforgettable 💜"
+            }
+        ];
+
+        let currentSnapIndex = 0;
+
+        // Initialize
+        function initSnaps() {
+            createProgressBars();
+            loadSnap(0);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') previousSnap();
+                if (e.key === 'ArrowRight') nextSnap();
+                if (e.key === 'Escape') window.location.href = 'index.html';
+            });
+
+            // Swipe support
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            document.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                if (touchEndX < touchStartX - 50) nextSnap();
+                if (touchEndX > touchStartX + 50) previousSnap();
+            }
+        }
+
+        function createProgressBars() {
+            const container = document.getElementById('progressContainer');
+            container.innerHTML = '';
+            
+            snaps.forEach((_, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'snap-progress-bar';
+                bar.innerHTML = '<div class="snap-progress-fill"></div>';
+                container.appendChild(bar);
+            });
+        }
+
+        function loadSnap(index) {
+            currentSnapIndex = index;
+            
+            const snap = snaps[index];
+            document.getElementById('snapImage').src = snap.image;
+            document.getElementById('snapCaption').textContent = snap.caption;
+            
+            // Update progress bars
+            document.querySelectorAll('.snap-progress-bar').forEach((bar, i) => {
+                const fill = bar.querySelector('.snap-progress-fill');
+                if (i < index) {
+                    fill.style.width = '100%';
+                } else if (i === index) {
+                    fill.style.width = '0%';
+                    setTimeout(() => fill.style.width = '100%', 10);
+                } else {
+                    fill.style.width = '0%';
+                }
+            });
+
+            // Show/hide navigation buttons
+            document.getElementById('prevBtn').style.opacity = index > 0 ? '1' : '0';
+            document.getElementById('nextBtn').style.opacity = index < snaps.length - 1 ? '1' : '0';
+        }
+
+        function nextSnap() {
+            if (currentSnapIndex < snaps.length - 1) {
+                loadSnap(currentSnapIndex + 1);
+            }
+        }
+
+        function previousSnap() {
+            if (currentSnapIndex > 0) {
+                loadSnap(currentSnapIndex - 1);
+            }
+        }
+
+        // Initialize on load
+        initSnaps();
+    </script>
 </body>
 </html>
