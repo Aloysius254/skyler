@@ -82,12 +82,6 @@ let uploadedPhotos = [];
 let database;
 
 // Initialize Firebase
-<script type="module">
-// Gallery Functions - Shared gallery visible to everyone via Firebase
-let uploadedPhotos = [];
-let database;
-
-// Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyB_fs3xeqg5LFrg-Sg55MCqmliSbiP2iZE",
     authDomain: "skyler-9b18a.firebaseapp.com",
