@@ -278,7 +278,6 @@ if (document.getElementById('galleryGrid')) {
 // ROMANTIC INTERACTIONS & ANIMATIONS
 // ========================================
 
-// Typing Effect on Hero Tagline (like "Not a quiz. Not a game. Just")
 const heroTagline = document.getElementById('heroTagline');
 const taglineMessages = [
     "Not just a website.",
@@ -291,6 +290,7 @@ let taglineCharIndex = 0;
 let isTaglineDeleting = false;
 
 function typeTagline() {
+    if (!heroTagline) return;
     const currentText = taglineMessages[taglineIndex];
     
     if (isTaglineDeleting) {
@@ -322,74 +322,80 @@ function typeTagline() {
 }
 
 // Start tagline typing after page load
-setTimeout(typeTagline, 1200);
+if (heroTagline) setTimeout(typeTagline, 1200);
 
 // Cursor Glow Effect
 const cursorGlow = document.querySelector('.cursor-glow');
-document.addEventListener('mousemove', (e) => {
-    cursorGlow.style.left = e.clientX + 'px';
-    cursorGlow.style.top = e.clientY + 'px';
-});
+if (cursorGlow) {
+    document.addEventListener('mousemove', (e) => {
+        cursorGlow.style.left = e.clientX + 'px';
+        cursorGlow.style.top = e.clientY + 'px';
+    });
+}
 
 // Starry Background Canvas
 const canvas = document.getElementById('starsCanvas');
-const ctx = canvas.getContext('2d');
-let stars = [];
+if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let stars = [];
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    // Regenerate stars on resize
-    stars = [];
-    for (let i = 0; i < 150; i++) {
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 1.5 + 0.5,
-            opacity: Math.random(),
-            twinkleSpeed: Math.random() * 0.02 + 0.005
-        });
-    }
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-function drawStars() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(star => {
-        star.opacity += star.twinkleSpeed;
-        if (star.opacity > 1 || star.opacity < 0) {
-            star.twinkleSpeed = -star.twinkleSpeed;
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        // Regenerate stars on resize
+        stars = [];
+        for (let i = 0; i < 150; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5 + 0.5,
+                opacity: Math.random(),
+                twinkleSpeed: Math.random() * 0.02 + 0.005
+            });
         }
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-        ctx.fill();
-    });
-    requestAnimationFrame(drawStars);
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function drawStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(star => {
+            star.opacity += star.twinkleSpeed;
+            if (star.opacity > 1 || star.opacity < 0) {
+                star.twinkleSpeed = -star.twinkleSpeed;
+            }
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+            ctx.fill();
+        });
+        requestAnimationFrame(drawStars);
+    }
+    drawStars();
 }
-drawStars();
 
 // Floating Particles (hearts, sparkles, stars)
 const particlesContainer = document.getElementById('particles');
-const particleIcons = ['✨', '💜', '🌙', '💫', '✦'];
+if (particlesContainer) {
+    const particleIcons = ['✨', '💜', '🌙', '💫', '✦'];
 
-function createParticle() {
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-    particle.textContent = particleIcons[Math.floor(Math.random() * particleIcons.length)];
-    particle.style.left = Math.random() * 100 + '%';
-    particle.style.animationDuration = (Math.random() * 5 + 6) + 's';
-    particle.style.fontSize = (Math.random() * 10 + 15) + 'px';
-    particlesContainer.appendChild(particle);
+    function createParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.textContent = particleIcons[Math.floor(Math.random() * particleIcons.length)];
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDuration = (Math.random() * 5 + 6) + 's';
+        particle.style.fontSize = (Math.random() * 10 + 15) + 'px';
+        particlesContainer.appendChild(particle);
 
-    setTimeout(() => {
-        particle.remove();
-    }, 8000);
+        setTimeout(() => {
+            particle.remove();
+        }, 8000);
+    }
+
+    setInterval(createParticle, 800);
 }
-
-setInterval(createParticle, 800);
 
 // IntersectionObserver for Scroll Animations
 const observerOptions = {
