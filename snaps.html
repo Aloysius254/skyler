@@ -4,10 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Snaps 📸</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📸</text></svg>">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Patrick+Hand&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
+    <!-- Music continues playing -->
+    <div class="music-toggle" id="musicToggle" onclick="toggleMusic()">🎵</div>
+    <audio id="bgMusic" loop>
+        <source src="music/Bruno Mars - Count on Me (Official Lyric Video)(MP3_160K).mp3" type="audio/mpeg">
+    </audio>
+
     <a href="index.html" class="back-btn">← back</a>
 
     <header class="snaps-header">
@@ -15,8 +26,8 @@
         <p class="snaps-subtitle">polaroids from our chaos</p>
     </header>
 
-    <div class="snaps-grid" id="snapsGrid">
-        <!-- Snaps will be loaded here -->
+    <div class="snaps-container" id="snapsContainer">
+        <!-- Snaps will be loaded here from Firebase -->
     </div>
 
     <script src="script.js"></script>

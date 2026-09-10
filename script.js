@@ -274,6 +274,85 @@ if (document.getElementById('galleryGrid')) {
     loadGallery();
 }
 
+// Initialize snaps page if on snaps page
+if (document.getElementById('snapsContainer')) {
+    loadSnaps();
+}
+
+// Load Snaps from Firebase
+function loadSnaps() {
+    const container = document.getElementById('snapsContainer');
+    container.innerHTML = '<div class="loading">Loading snaps... ✨</div>';
+    
+    if (database) {
+        database.ref('photos').on('value', (snapshot) => {
+            const data = snapshot.val();
+            const photos = data ? Object.values(data) : [];
+            renderSnaps(photos);
+        });
+    } else {
+        // Fallback to localStorage
+        const stored = localStorage.getItem('skylerSharedGallery');
+        const photos = stored ? JSON.parse(stored) : [];
+        renderSnaps(photos);
+    }
+}
+
+function renderSnaps(photos) {
+    const container = document.getElementById('snapsContainer');
+    
+    if (photos.length === 0) {
+        container.innerHTML = `
+            <div class="no-snaps">
+                <p>No snaps yet... 📸</p>
+                <p style="font-size: 0.9rem;">Upload photos in the <a href="gallery.html" style="color: var(--accent-light);">gallery</a> to see them here!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Sort by date (newest first)
+    photos.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+    
+    container.innerHTML = '';
+    
+    photos.forEach((photo, index) => {
+        const snap = document.createElement('div');
+        snap.className = 'snap-card';
+        snap.style.animationDelay = `${index * 0.1}s`;
+        
+        const date = photo.date ? new Date(photo.date).toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric' 
+        }) : 'Recently';
+        
+        snap.innerHTML = `
+            <img src="${photo.src}" alt="${photo.caption}" class="snap-image" loading="lazy">
+            <div class="snap-content">
+                <p class="snap-caption">${photo.caption}</p>
+                <p class="snap-date">${date}</p>
+            </div>
+            <div class="snap-actions">
+                <button class="snap-action-btn" onclick="toggleLike(this)">💜</button>
+                <button class="snap-action-btn">💬</button>
+                <button class="snap-action-btn">📤</button>
+            </div>
+        `;
+        
+        container.appendChild(snap);
+    });
+}
+
+function toggleLike(btn) {
+    btn.classList.toggle('liked');
+    if (btn.classList.contains('liked')) {
+        btn.textContent = '❤️';
+    } else {
+        btn.textContent = '💜';
+    }
+}
+
 // ========================================
 // ROMANTIC INTERACTIONS & ANIMATIONS
 // ========================================
