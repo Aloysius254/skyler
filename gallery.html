@@ -32,6 +32,9 @@
         <div class="upload-modal" id="uploadModal">
             <div class="modal-content">
                 <h2>add a photo 📷</h2>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px;">
+                    Images are automatically compressed to save space ✨
+                </p>
                 <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(event)">
                 <div class="preview-container" id="previewContainer">
                     <img id="previewImage" src="" alt="Preview">
@@ -39,7 +42,7 @@
                 <input type="text" id="captionInput" placeholder="add a caption..." maxlength="100">
                 <div class="modal-buttons">
                     <button onclick="savePhoto()">save photo</button>
-                    <button class="skip-btn" onclick="closeUpload()">skip</button>
+                    <button class="skip-btn" onclick="closeUpload()">cancel</button>
                 </div>
             </div>
         </div>

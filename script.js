@@ -102,15 +102,57 @@ function closeUpload() {
 function previewPhoto(event) {
     const file = event.target.files[0];
     if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
+        // Compress image before preview
+        compressImage(file, (compressedDataUrl) => {
             const previewContainer = document.getElementById('previewContainer');
             const previewImage = document.getElementById('previewImage');
-            previewImage.src = e.target.result;
+            previewImage.src = compressedDataUrl;
             previewContainer.classList.add('active');
-        };
-        reader.readAsDataURL(file);
+        });
     }
+}
+
+function compressImage(file, callback) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Max dimensions for compressed image
+            const MAX_WIDTH = 1200;
+            const MAX_HEIGHT = 1200;
+            
+            let width = img.width;
+            let height = img.height;
+            
+            // Calculate new dimensions while maintaining aspect ratio
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Draw and compress
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convert to base64 with 0.7 quality (70% - good balance between quality and size)
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+            callback(compressedDataUrl);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
 }
 
 function savePhoto() {
