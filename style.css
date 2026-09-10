@@ -486,6 +486,34 @@ blockquote {
     font-size: 0.9rem;
 }
 
+.delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.gallery-item:hover .delete-btn {
+    opacity: 1;
+}
+
+.delete-btn:hover {
+    background: rgba(255, 59, 48, 0.9);
+    transform: scale(1.1);
+}
+
 .add-photo-card {
     aspect-ratio: 1;
     background: var(--card-bg);

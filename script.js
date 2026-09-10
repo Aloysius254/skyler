@@ -77,8 +77,16 @@ function handleScrollAnimation() {
 window.addEventListener('scroll', handleScrollAnimation);
 window.addEventListener('load', handleScrollAnimation);
 
-// Gallery Functions
-let uploadedPhotos = JSON.parse(localStorage.getItem('skylerGallery')) || [];
+// Gallery Functions - Shared gallery visible to everyone
+let uploadedPhotos = [];
+const GALLERY_KEY = 'skylerSharedGallery';
+
+// Load photos (shared via localStorage for now - visible on same browser)
+function loadGallery() {
+    const stored = localStorage.getItem(GALLERY_KEY);
+    uploadedPhotos = stored ? JSON.parse(stored) : [];
+    renderGallery();
+}
 
 function openUpload() {
     document.getElementById('uploadModal').classList.add('active');
@@ -113,11 +121,12 @@ function savePhoto() {
         const photo = {
             id: Date.now(),
             src: previewImage.src,
-            caption: caption
+            caption: caption,
+            date: new Date().toISOString()
         };
         
         uploadedPhotos.push(photo);
-        localStorage.setItem('skylerGallery', JSON.stringify(uploadedPhotos));
+        localStorage.setItem(GALLERY_KEY, JSON.stringify(uploadedPhotos));
         renderGallery();
         closeUpload();
     } else {
@@ -139,6 +148,9 @@ function renderGallery() {
         item.innerHTML = `
             <img src="${photo.src}" alt="${photo.caption}">
             <div class="caption">${photo.caption}</div>
+            <button class="delete-btn" onclick="deletePhoto(${photo.id})" title="Delete photo">
+                <span>🗑️</span>
+            </button>
         `;
         galleryGrid.appendChild(item);
     });
@@ -146,9 +158,17 @@ function renderGallery() {
     galleryGrid.appendChild(addCard);
 }
 
+function deletePhoto(photoId) {
+    if (confirm('Delete this photo? 🥺')) {
+        uploadedPhotos = uploadedPhotos.filter(photo => photo.id !== photoId);
+        localStorage.setItem(GALLERY_KEY, JSON.stringify(uploadedPhotos));
+        renderGallery();
+    }
+}
+
 // Initialize gallery if on gallery page
 if (document.getElementById('galleryGrid')) {
-    renderGallery();
+    loadGallery();
 }
 
 // ========================================
