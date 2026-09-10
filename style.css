@@ -21,7 +21,12 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
-    cursor: none;
+}
+
+@media (min-width: 769px) {
+    body {
+        cursor: none;
+    }
 }
 
 /* Starry Background Canvas */

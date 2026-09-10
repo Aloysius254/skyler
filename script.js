@@ -192,24 +192,26 @@ document.addEventListener('mousemove', (e) => {
 // Starry Background Canvas
 const canvas = document.getElementById('starsCanvas');
 const ctx = canvas.getContext('2d');
+let stars = [];
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    
+    // Regenerate stars on resize
+    stars = [];
+    for (let i = 0; i < 150; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.5 + 0.5,
+            opacity: Math.random(),
+            twinkleSpeed: Math.random() * 0.02 + 0.005
+        });
+    }
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
-
-const stars = [];
-for (let i = 0; i < 150; i++) {
-    stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 1.5,
-        opacity: Math.random(),
-        twinkleSpeed: Math.random() * 0.02 + 0.005
-    });
-}
 
 function drawStars() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -304,8 +306,8 @@ if (document.querySelector('.cinematic-section')) {
     cinematicObserver.observe(document.querySelector('.cinematic-section'));
 }
 
-// Open When Cards - Messages
-const messages = {
+// Open When Cards - Messages for modal
+const openWhenMessages = {
     sad: {
         icon: '💌',
         title: 'When you\'re sad',
@@ -335,7 +337,7 @@ const messages = {
 
 function openMessage(type) {
     const modal = document.getElementById('openWhenModal');
-    const msg = messages[type];
+    const msg = openWhenMessages[type];
     
     document.getElementById('modalIcon').textContent = msg.icon;
     document.getElementById('modalTitle').textContent = msg.title;
