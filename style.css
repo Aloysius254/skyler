@@ -162,6 +162,25 @@ blockquote {
     margin-bottom: 30px;
 }
 
+.hero-typing {
+    font-size: 1.5rem;
+    color: var(--accent-light);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    min-height: 2rem;
+    margin-bottom: 20px;
+}
+
+.hero-typing::after {
+    content: '|';
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
 .scroll-indicator {
     color: var(--text-secondary);
     font-size: 0.9rem;

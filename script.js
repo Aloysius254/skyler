@@ -136,6 +136,47 @@ if (document.getElementById('galleryGrid')) {
 // ROMANTIC INTERACTIONS & ANIMATIONS
 // ========================================
 
+// Typing Effect on Landing Page
+const typingText = document.getElementById('typingText');
+const messages = [
+    "A little something just for you...",
+    "Made with love and late nights...",
+    "You mean the world to me... 💜"
+];
+let messageIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typingSpeed = 100;
+
+function typeEffect() {
+    const currentMessage = messages[messageIndex];
+    
+    if (isDeleting) {
+        typingText.textContent = currentMessage.substring(0, charIndex - 1);
+        charIndex--;
+        typingSpeed = 50;
+    } else {
+        typingText.textContent = currentMessage.substring(0, charIndex + 1);
+        charIndex++;
+        typingSpeed = 100;
+    }
+    
+    if (!isDeleting && charIndex === currentMessage.length) {
+        // Pause at end of message
+        typingSpeed = 2000;
+        isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        messageIndex = (messageIndex + 1) % messages.length;
+        typingSpeed = 500;
+    }
+    
+    setTimeout(typeEffect, typingSpeed);
+}
+
+// Start typing effect after a short delay
+setTimeout(typeEffect, 1000);
+
 // Cursor Glow Effect
 const cursorGlow = document.querySelector('.cursor-glow');
 document.addEventListener('mousemove', (e) => {
