@@ -82,14 +82,29 @@ let uploadedPhotos = [];
 let database;
 
 // Initialize Firebase
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Gallery Functions - Shared gallery visible to everyone via Firebase
+let uploadedPhotos = [];
+let database;
+
+// Initialize Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyDqpN8vR9kZxKj8YHj_3mW8vN5xKj8YHj_",
-    authDomain: "skyler-gallery.firebaseapp.com",
-    databaseURL: "https://skyler-gallery-default-rtdb.firebaseio.com",
-    projectId: "skyler-gallery",
-    storageBucket: "skyler-gallery.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:abc123def456"
+    apiKey: "AIzaSyB_fs3xeqg5LFrg-Sg55MCqmliSbiP2iZE",
+    authDomain: "skyler-9b18a.firebaseapp.com",
+    databaseURL: "https://skyler-9b18a-default-rtdb.firebaseio.com",
+    projectId: "skyler-9b18a",
+    storageBucket: "skyler-9b18a.firebasestorage.app",
+    messagingSenderId: "481365693064",
+    appId: "1:481365693064:web:e447271eb73b58f1a4853d",
+    measurementId: "G-4PXQYS50E7"
 };
 
 // Check if Firebase is available and initialize
@@ -97,6 +112,7 @@ if (typeof firebase !== 'undefined') {
     try {
         firebase.initializeApp(firebaseConfig);
         database = firebase.database();
+        console.log('✅ Firebase connected - gallery is now shared!');
     } catch (error) {
         console.log('Firebase not available, using localStorage');
     }
